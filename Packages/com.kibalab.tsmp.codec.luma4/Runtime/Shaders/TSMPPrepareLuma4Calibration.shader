@@ -29,7 +29,6 @@ Shader "Hidden/TSMP/Prepare Luma4 Calibration"
             #pragma fragment frag
             #include "Packages/com.kibalab.tsmp.core/Runtime/Codecs/Common/Shaders/cgincs/TSMPDecodeCommon.cginc"
 
-            
             #include "Luma4Calibration.cginc"
 
             float4 frag(v2f i) : SV_Target
