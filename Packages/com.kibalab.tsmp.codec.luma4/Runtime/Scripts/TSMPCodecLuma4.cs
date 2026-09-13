@@ -23,6 +23,15 @@ namespace K13A.TSMP
         public override Material GetDecodeMaterial(int index) => index == 0 ? byteDecodeMaterial : null;
 #endif
 
+        public override void PrepareDecode(Texture source, Material material)
+        {
+            base.PrepareDecode(source, material);
+            // 단일 샘플에서는 LUT 준비 비용이 이득보다 커서 기존 디코드 경로를 유지한다.
+            if (material == null || GetDecodeSampleSize(material) <= 1)
+                return;
+            PrepareCalibrationLut(source, material, 16);
+        }
+
         public override void ApplyDecodeOptions()
         {
             selectedDecodeMaterial = byteDecodeMaterial;

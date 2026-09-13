@@ -2,6 +2,7 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
 {
     Properties
     {
+        [HideInInspector] _CalibrationLut ("Calibration LUT", 2D) = "black" {}
         _MainTex ("TSMP Source", 2D) = "black" {}
         _BlockSize ("Block Size", Float) = 8
         _SampleSize ("Sample Size", Float) = 0
@@ -33,16 +34,10 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_local _ TSMP_CALIBRATION_LUT
             #include "Packages/com.kibalab.tsmp.core/Runtime/Codecs/Common/Shaders/cgincs/TSMPDecodeCommon.cginc"
 
-            float CalibrationLuma(int symbol)
-            {
-                float blockX0 = symbol * 2;
-                float blockX1 = blockX0 + 1.0;
-                float a = SampleBlockLuma(blockX0, 1.0);
-                float b = SampleBlockLuma(blockX1, 1.0);
-                return (a + b) * 0.5;
-            }
+            #include "Luma4Calibration.cginc"
 
             int ClassifySymbol(float luma)
             {
