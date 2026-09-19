@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.0
+
+Stable promotion of all 0.0.4-beta.1 through 0.0.4-beta.2 changes since 0.0.3. No runtime/shader changes from 0.0.4-beta.2.
+
+- Use a 16-entry Float32 calibration LUT for effective sample sizes greater than one; retain the original single-sample path.
+- Bundle the preparation shader/material on the codec prefab and retain ordinary decoding when preparation resources are unavailable with a compatible Core.
+- Reuse native encoder raster arrays and explicitly opt in to Core's GPU Luma4 writer. Retain CPU fallback and preserve the existing palette.
+- Write decoded header and payload bytes directly to the combined readback target, retaining the legacy shader path.
+- Require Core 1.0.0 in UPM and >=1.0.0 in VPM. Keep Worlds SDK >=3.9.0 VPM-only; ordinary Unity does not require VRCSDK.
+- Preserve codec IDs, protocol bytes, quantization behavior and existing asset GUIDs.
+- Update Japanese, English and Korean READMEs for stable installation, automatic setup and API compatibility; retain the beta history below.
+- Included paired pipeline measurements show Udon encoder mean 11.27 -> 0.457 ms, with a small extra GPU conversion draw. These are not an isolated codec comparison.
+- See [1.0.0 release notes](https://github.com/kibalab/TSMPCodec-Luma4/releases/tag/v1.0.0) for the cumulative changes, validation evidence and remaining limits.
+
 ## 0.0.4-beta.2
 
 - Reuse native encoder raster arrays and opt in to Core's GPU Luma4 writer without changing the palette, codec ID or datagram.
