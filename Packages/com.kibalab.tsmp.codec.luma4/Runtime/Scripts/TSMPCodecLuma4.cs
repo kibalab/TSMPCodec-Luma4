@@ -8,6 +8,8 @@ namespace K13A.TSMP
         public Material byteDecodeMaterial;
 
 #if !COMPILER_UDONSHARP
+        public override bool SupportsGpuLuma4Encoding => true;
+
         public override int SymbolMode => (int)K13A.TSMP.SymbolMode.Luma4;
         public override int GetPayloadStartRow(int width, int blockSize) => Luma4Raster.PayloadStartRow;
         public override int GetPayloadCapacityBytes(int width, int height, int blockSize) => Luma4Raster.GetPayloadCapacityBytes(width, height, blockSize);

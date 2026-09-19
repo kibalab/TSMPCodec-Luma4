@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Reuse native encoder raster arrays and opt in to Core's GPU Luma4 writer without changing the palette, codec ID or datagram.
+- This source requires the corresponding unreleased Core buffered/GPU writer APIs. Publish matching Core and Luma4 dependency versions together; the current beta Core does not provide these APIs.
+
 ## 0.0.4-beta.1
 
 - Require Core 0.3.0-beta.2 in UPM and >=0.3.0-beta.2 in VPM because the codec now calls the preparation API. Core 0.2.0 and 0.3.0-beta.1 do not provide that API.
