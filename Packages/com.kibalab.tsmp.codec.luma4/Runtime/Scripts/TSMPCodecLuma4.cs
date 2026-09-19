@@ -18,6 +18,11 @@ namespace K13A.TSMP
             return Luma4Raster.TryWriteFrame(texture, blockSize, headerBytes, payloadBytes, out error);
         }
 
+        public override bool TryWriteFrameBuffered(Texture2D texture, int blockSize, byte[] headerBytes, byte[] payloadBytes, ref Color32[] pixels, out string error)
+        {
+            return Luma4Raster.TryWriteFrameBuffered(texture, blockSize, headerBytes, payloadBytes, ref pixels, out error);
+        }
+
         public override byte[] GetCodecOptionBytes() => null;
         public override int DecodeMaterialCount => byteDecodeMaterial != null ? 1 : 0;
         public override Material GetDecodeMaterial(int index) => index == 0 ? byteDecodeMaterial : null;
