@@ -1,9 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.0.4-beta.2
 
 - Reuse native encoder raster arrays and opt in to Core's GPU Luma4 writer without changing the palette, codec ID or datagram.
-- This source requires the corresponding unreleased Core buffered/GPU writer APIs. Publish matching Core and Luma4 dependency versions together; the current beta Core does not provide these APIs.
+- Write the decoded header prefix and payload directly to Core's combined readback target, retaining the legacy shader path.
+- Require Core 0.3.0-beta.3 through UPM and >=0.3.0-beta.3 through VPM for the buffered/GPU writer APIs. Update Core first.
+- In the paired Core/Luma4 Udon profile (720p, 4 KiB, 60 Hz), mean encoder time decreased from 11.27 ms to 0.457 ms. The 360p / 32 B raster helper decreased from 0.158 ms to 0.066 ms. These are paired pipeline results, not an isolated codec comparison.
+- GPU encoding adds a conversion pass: the measured 720p Gamma draw median was 16.5 us versus 8.3 us for expansion alone. CPU fallback is retained.
+- Validated native Gamma/Linear and compiled Udon VM pixel parity. See the matching Core release notes for hardware, methodology and limits; live VRChat, Quest and IL2CPP were not verified.
 
 ## 0.0.4-beta.1
 
