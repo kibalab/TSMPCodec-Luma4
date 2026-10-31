@@ -2,6 +2,7 @@ Shader "Hidden/TSMP/Prepare Luma4 Calibration"
 {
     Properties
     {
+        _RecoveryMode ("Recovery Mode", Float) = 0
         _MainTex ("TSMP Source", 2D) = "black" {}
         _BlockSize ("Block Size", Float) = 8
         _SampleSize ("Sample Size", Float) = 0
@@ -29,12 +30,15 @@ Shader "Hidden/TSMP/Prepare Luma4 Calibration"
             #pragma fragment frag
             #include "Packages/com.kibalab.tsmp.core/Runtime/Codecs/Common/Shaders/cgincs/TSMPDecodeCommon.cginc"
 
-            #include "Luma4Calibration.cginc"
+            #include "Luma4Recovery.cginc"
 
             float4 frag(v2f i) : SV_Target
             {
                 int index = (int)floor(i.pos.x);
-                return CalibrationLuma(index).xxxx;
+                float2 fit = float2(1.0, 0.0);
+                if (_RecoveryMode > 0.5 && _RecoveryMode < 1.5)
+                    fit = RecoveryFitParameters();
+                return RecoveryCalibrationLuma(index, fit).xxxx;
             }
             ENDCG
         }
