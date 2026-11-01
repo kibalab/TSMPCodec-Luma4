@@ -5,6 +5,7 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
         [HideInInspector] _TSMPHeaderTex ("Decoded Header", 2D) = "black" {}
         [HideInInspector] _TSMPHeaderPixels ("Header Pixels", Float) = 0
         [HideInInspector] _CalibrationLut ("Calibration LUT", 2D) = "black" {}
+        _RecoveryMode ("Recovery Mode", Float) = 0
         _MainTex ("TSMP Source", 2D) = "black" {}
         _BlockSize ("Block Size", Float) = 8
         _SampleSize ("Sample Size", Float) = 0
@@ -39,17 +40,22 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
             #pragma multi_compile_local _ TSMP_CALIBRATION_LUT
             #include "Packages/com.kibalab.tsmp.core/Runtime/Codecs/Common/Shaders/cgincs/TSMPDecodeCommon.cginc"
 
-            #include "Luma4Calibration.cginc"
+            #include "Luma4Recovery.cginc"
 
             int ClassifySymbol(float luma)
             {
+                float2 fit = float2(1.0, 0.0);
+#if !defined(TSMP_CALIBRATION_LUT)
+                if (_RecoveryMode > 0.5 && _RecoveryMode < 1.5)
+                    fit = RecoveryFitParameters();
+#endif
                 int bestSymbol = 0;
                 float bestDistance = 999.0;
 
                 [unroll]
                 for (int i = 0; i < 16; i++)
                 {
-                    float c = CalibrationLuma(i);
+                    float c = RecoveryCalibrationLuma(i, fit);
                     float d = abs(luma - c);
 
                     if (d < bestDistance)
