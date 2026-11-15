@@ -42,17 +42,25 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
 
             #include "Luma4Recovery.cginc"
 
-            int ClassifySymbol(float luma)
+            float2 PrepareDecodeFit()
             {
-                float2 fit = float2(1.0, 0.0);
 #if !defined(TSMP_CALIBRATION_LUT)
                 if (_RecoveryMode > 0.5 && _RecoveryMode < 1.5)
-                    fit = RecoveryFitParameters();
+                    return RecoveryFitParameters();
 #endif
+                return float2(1.0, 0.0);
+            }
+
+            int ClassifySymbol(float luma, float2 fit)
+            {
                 int bestSymbol = 0;
                 float bestDistance = 999.0;
 
+#if defined(TSMP_CALIBRATION_LUT)
                 [unroll]
+#else
+                [loop]
+#endif
                 for (int i = 0; i < 16; i++)
                 {
                     float c = RecoveryCalibrationLuma(i, fit);
@@ -68,24 +76,48 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
                 return bestSymbol;
             }
 
-            int DecodeSymbolAtBlockIndex(float blockIndex)
+            int DecodeSymbolAtBlockIndex(float blockIndex, float2 fit)
             {
                 float luma = SampleLumaBlockByIndex(blockIndex);
-                return ClassifySymbol(luma);
+                return ClassifySymbol(luma, fit);
             }
 
-            int DecodeByte(int byteIndex)
+            int DecodeByte(int byteIndex, float2 fit)
             {
                 if (byteIndex < 0 || byteIndex >= (int)_ByteCount)
                     return 0;
 
                 float blockIndex = _StartBlock + byteIndex * 2;
-                int low = DecodeSymbolAtBlockIndex(blockIndex);
-                int high = DecodeSymbolAtBlockIndex(blockIndex + 1.0);
+                int low = DecodeSymbolAtBlockIndex(blockIndex, fit);
+                int high = DecodeSymbolAtBlockIndex(blockIndex + 1.0, fit);
                 return (high << 4) | low;
             }
 
-            #include "Packages/com.kibalab.tsmp.core/Runtime/Codecs/Common/Shaders/cgincs/TSMPDecodeByteOutput.cginc"
+            // Keep the shared output layout while preparing this decoder's fit once.
+            float4 frag(v2f i) : SV_Target
+            {
+#if defined(TSMP_COMBINED_BYTE_OUTPUT)
+                int baseByte;
+                float4 prefix;
+                if (TSMPReadOutputPrefix(i.uv, baseByte, prefix))
+                    return prefix;
+#else
+                float2 pixel = floor(i.uv * float2(_OutputWidth, _OutputHeight));
+                pixel = clamp(pixel, 0.0, float2(_OutputWidth - 1.0, _OutputHeight - 1.0));
+                int baseByte = ((int)pixel.y * (int)_OutputWidth + (int)pixel.x) * 4;
+#endif
+
+                if (baseByte >= (int)_ByteCount)
+                    return 0.0;
+
+                float2 decodeFit = PrepareDecodeFit();
+                int b0 = DecodeByte(baseByte + 0, decodeFit);
+                int b1 = DecodeByte(baseByte + 1, decodeFit);
+                int b2 = DecodeByte(baseByte + 2, decodeFit);
+                int b3 = DecodeByte(baseByte + 3, decodeFit);
+
+                return float4(b0 / 255.0, b1 / 255.0, b2 / 255.0, b3 / 255.0);
+            }
             ENDCG
         }
     }
