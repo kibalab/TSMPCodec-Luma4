@@ -30,7 +30,7 @@ https://vpm.kiba.red/
 
 그 다음 `TSMP Core`와 `TSMP Codec Luma4`를 설치합니다.
 
-일반 Unity에서는 UPM의 **Add package from disk**로 Core 1.0.0과 이 패키지를 설치합니다. VRCSDK/UdonSharp는 필요하지 않습니다. 두 환경 모두 동일한 Controller 프리팹과 자동 설정을 사용합니다.
+일반 Unity에서는 UPM의 **Add package from disk**로 Core 1.0.0 이상과 이 패키지를 설치합니다. VRCSDK/UdonSharp는 필요하지 않습니다. 두 환경 모두 동일한 Controller 프리팹과 자동 설정을 사용합니다.
 
 ## 사용 방법
 
@@ -41,7 +41,7 @@ https://vpm.kiba.red/
 
 ## 배포 상태
 
-Luma4 1.0.0은 직전 정식 버전 0.0.3 이후의 베타 변경사항을 모두 통합한 정식 버전입니다. Core 1.0.0을 먼저 설치하세요. VCC에서 시험판 표시를 켤 필요가 없습니다.
+[Luma4 1.1.0](https://github.com/kibalab/TSMPCodec-Luma4/releases/tag/v1.1.0)은 수신 처리를 개선한 정식 버전입니다. Core 1.1.0을 권장합니다. Core 1.0.0도 지원하며 송신 포맷은 바뀌지 않았습니다.
 
 ## 라이선스
 
@@ -49,6 +49,6 @@ MIT License. Copyright (c) 2026 KIBA_Labs.
 
 ## 준비 API 호환성
 
-이 버전은 Core 1.0.0과 해당 코덱 준비·출력 API가 필요합니다. 코덱을 설치하기 전에 Core를 업데이트하세요. 준비 머티리얼이 없으면 기존 셰이더 경로를 사용할 수 있지만, 호환되지 않는 Core API를 대신하지는 못합니다.
+이 버전은 Core 1.0.0 이상과 해당 코덱 준비·출력 API가 필요합니다. 코덱을 설치하기 전에 Core를 업데이트하세요. 준비 머티리얼이 없으면 기존 셰이더 경로를 사용할 수 있지만, 호환되지 않는 Core API를 대신하지는 못합니다.
 
 UPM은 Core 1.0.0, VPM은 Core >=1.0.0을 사용합니다. 로컬/디스크 또는 Git 설치에서는 프로젝트 의존성에 Core도 직접 지정해야 합니다. 패키지 메타데이터만으로 UPM이 GitHub에서 Core를 가져오지는 않습니다. VRChat Worlds SDK는 VPM에서만 의존합니다.

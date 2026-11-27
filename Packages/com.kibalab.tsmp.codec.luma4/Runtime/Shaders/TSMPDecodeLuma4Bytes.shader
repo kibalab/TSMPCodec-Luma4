@@ -6,6 +6,7 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
         [HideInInspector] _TSMPHeaderPixels ("Header Pixels", Float) = 0
         [HideInInspector] _CalibrationLut ("Calibration LUT", 2D) = "black" {}
         _MainTex ("TSMP Source", 2D) = "black" {}
+        [HideInInspector] _UseBilinear4 ("Bilinear 4x4 sampling", Float) = 0
         _BlockSize ("Block Size", Float) = 8
         _SampleSize ("Sample Size", Float) = 0
         _StartBlock ("Start Block", Float) = 0
@@ -46,7 +47,7 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
                 int bestSymbol = 0;
                 float bestDistance = 999.0;
 
-                [unroll]
+                [loop]
                 for (int i = 0; i < 16; i++)
                 {
                     float c = CalibrationLuma(i);
@@ -64,7 +65,11 @@ Shader "Hidden/TSMP/Decode Luma4 Bytes"
 
             int DecodeSymbolAtBlockIndex(float blockIndex)
             {
+#if defined(TSMP_HAS_BLOCK_COORDINATES)
+                float luma = Luma4Block(TSMPBlockCoordinates((uint)blockIndex));
+#else
                 float luma = SampleLumaBlockByIndex(blockIndex);
+#endif
                 return ClassifySymbol(luma);
             }
 

@@ -1,7 +1,7 @@
 {
   "name": "com.kibalab.tsmp.codec.luma4",
   "displayName": "TSMP Codec Luma4",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "unity": "2022.3",
   "description": "Luma4 TSMP codec, Udon handler, shaders, materials, and prefab.",
   "author": {

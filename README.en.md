@@ -30,7 +30,7 @@ https://vpm.kiba.red/
 
 Then install `TSMP Core` and `TSMP Codec Luma4`.
 
-For ordinary Unity, install Core 1.0.0 and this package through UPM's **Add package from disk**. VRCSDK/UdonSharp is not required. Both environments use the same Controller prefab and automatic setup preparation.
+For ordinary Unity, install Core 1.0.0 or newer and this package through UPM's **Add package from disk**. VRCSDK/UdonSharp is not required. Both environments use the same Controller prefab and automatic setup preparation.
 
 ## Usage
 
@@ -41,7 +41,7 @@ For ordinary Unity, install Core 1.0.0 and this package through UPM's **Add pack
 
 ## Release Status
 
-Luma4 1.0.0 is a stable release consolidating all beta changes since 0.0.3. Install Core 1.0.0 first. VCC does not require prerelease packages for these versions.
+[Luma4 1.1.0](https://github.com/kibalab/TSMPCodec-Luma4/releases/tag/v1.1.0) is a stable receiver update. Recommended: Core 1.1.0. Core 1.0.0 remains supported; the sender wire format is unchanged.
 
 ## License
 
@@ -49,6 +49,6 @@ MIT License. Copyright (c) 2026 KIBA_Labs.
 
 ## Preparation API compatibility
 
-This release requires Core 1.0.0 and its codec preparation/output APIs. Update Core before installing this codec. Missing preparation materials can select the legacy shader path, but cannot compensate for an incompatible Core API.
+This release requires Core 1.0.0 or newer and its codec preparation/output APIs. Update Core before installing this codec. Missing preparation materials can select the legacy shader path, but cannot compensate for an incompatible Core API.
 
 UPM uses Core 1.0.0; VPM accepts Core >=1.0.0. Local/disk or Git installs must supply Core directly in the project's dependencies; package metadata does not tell UPM to fetch Core from GitHub. VRChat Worlds SDK remains a VPM-only dependency.

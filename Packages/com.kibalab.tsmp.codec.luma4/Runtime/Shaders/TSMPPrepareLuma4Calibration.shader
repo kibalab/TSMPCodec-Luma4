@@ -3,6 +3,7 @@ Shader "Hidden/TSMP/Prepare Luma4 Calibration"
     Properties
     {
         _MainTex ("TSMP Source", 2D) = "black" {}
+        [HideInInspector] _UseBilinear4 ("Bilinear 4x4 sampling", Float) = 0
         _BlockSize ("Block Size", Float) = 8
         _SampleSize ("Sample Size", Float) = 0
         _StartBlock ("Start Block", Float) = 0
