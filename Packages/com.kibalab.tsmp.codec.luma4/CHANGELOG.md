@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- Use bounded shader loops for luminance sampling and calibration instead of expanding nested loops at compile time.
+- Allow single-sample decoding to use the calibration LUT when explicitly requested.
+- Add optional four-tap bilinear sampling for eligible native-resolution 4x4 footprints on Core 1.1.0. It is off by default; Core 1.0.0 and other footprints use ordinary sampling.
+- Refresh bundled Udon bytecode and field metadata for the receive options.
+- Core 1.0.0 and 1.1.0 supported; codec ID and sender wire format unchanged.
+
 ## 1.0.0
 
 Stable promotion of all 0.0.4-beta.1 through 0.0.4-beta.2 changes since 0.0.3. No runtime/shader changes from 0.0.4-beta.2.
